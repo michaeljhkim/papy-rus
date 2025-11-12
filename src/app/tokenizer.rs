@@ -7,8 +7,8 @@ pub enum Token {
     // Operators
     PLUS,             // +
     MINUS,            // -
-    MUL,              // *
-    DIV,              // /
+    STAR,              // *
+    SLASH,              // /
 
     // Parentheses
     LPAREN,           // (
@@ -20,6 +20,7 @@ pub enum Token {
     // End of input
     EOF,
 }
+
 
 /*
 pub trait Tokenizer {
@@ -47,6 +48,15 @@ pub fn tokenize(source_str: String) -> Vec<Token> {
             },
             '+' => {
                 token_list.push(Token::PLUS)
+            },
+            '-' => {
+                token_list.push(Token::MINUS)
+            },
+            '*' => {
+                token_list.push(Token::STAR)
+            },
+            '/' => {
+                token_list.push(Token::SLASH)
             },
             '(' => {
                 token_list.push(Token::LPAREN)
