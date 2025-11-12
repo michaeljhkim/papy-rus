@@ -1,7 +1,7 @@
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     // Literals
-    NUMBER(f64),      // e.g., 42, 3.14
+    INTEGER(i32),      // e.g., 42, 3.14
     IDENT(String),    // optional, for variables like x, y
 
     // Operators
@@ -27,13 +27,39 @@ pub trait Tokenizer {
 }
 */
 
-fn tokenize(source_str: String) {
-    let mut token_list: Vec<Token>;
+pub fn tokenize(source_str: String) -> Vec<Token> {
+    let mut token_list: Vec<Token> = vec![];
+    let mut source_iter = source_str.chars().peekable();
     
     let mut num_str = String::new();
 
-    for c in source_str.chars() {
+    while let Some(c) = source_iter.next() {
+        match c {
+            '0'..='9' => {
+                num_str.push_str(&c.to_string());
+                let next_char: &char = source_iter.peek().unwrap_or(&' ');
 
+                if !next_char.is_digit(10) && !num_str.is_empty() {
+                    let i = num_str.parse::<i32>().unwrap();
+                    token_list.push(Token::INTEGER(i));
+                    num_str = "".to_string();
+                }
+            },
+            '+' => {
+                token_list.push(Token::PLUS)
+            },
+            '(' => {
+                token_list.push(Token::LPAREN)
+            },
+            ')' => {
+                token_list.push(Token::RPAREN)
+            },
+            ' ' | '\t' | '\n' => {
+                continue
+            },
+            _ => panic!("Unexpected character: {}", c)
+        }
     }
-
+    
+    return token_list;
 }
